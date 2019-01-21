@@ -1,20 +1,29 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { Pic } from '../../interfaces/pic';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
 })
 export class HomePage {
-  picArray: any[];
+  picArray: Pic[];
   configUrl = 'https://media.mw.metropolia.fi/wbma';
 
-  constructor(private http: HttpClient) {
-    this.getData();
+  constructor(private http: HttpClient, private photoViewer: PhotoViewer) {
   }
 
   getData() {
-    this.http.get<any>('/assets/test.json').subscribe((data: any) => {
+    return this.http.get<Pic[]>(this.configUrl + '/media');
+  }
+
+  showImage(image) {
+    this.photoViewer.show(image);
+  }
+
+  ngOnInit() {
+    this.getData().subscribe((data: Pic[]) => {
       console.log(data);
       this.picArray = data;
     });
