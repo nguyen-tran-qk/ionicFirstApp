@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { Pic } from '../../interfaces/pic';
 import { MediaProvider } from '../../providers/media/media';
-import { l } from '@angular/core/src/render3';
 
 @Component({
   selector: 'page-home',
@@ -30,10 +29,11 @@ export class HomePage {
 
   getAllFiles() {
     this.mediaProvider.getAllMedia().subscribe((data: Pic[]) => {
+      this.picArray = [];
       data.forEach((item: Pic) => {
         this.mediaProvider.getSingleMedia(item.file_id).subscribe((file: Pic) => {
           this.picArray.push(file);
-        })
+        });
       });
     });
   }
