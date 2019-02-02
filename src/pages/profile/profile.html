@@ -7,12 +7,23 @@
 <ion-header>
 
   <ion-navbar hideBackButton="true">
-    <ion-title>profile</ion-title>
+    <ion-title>My profile</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-card>
+    <img [src]="profileImage ? uploadUrl + profileImage.filename : ''"/>
+    <ion-card-content>
+      <ion-card-title>
+        {{ user.username }}
+        </ion-card-title>
+      <p>
+        Email: {{ user.email }}
+      </p>
+      <button ion-button clear  (click)="logout()">Log out</button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

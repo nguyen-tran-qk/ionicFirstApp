@@ -33,6 +33,7 @@ export class LoginRegisterPage {
       this.mediaProvider.login(this.user).subscribe((data: LoggedInResponse) => {
         if (data.token) {
           localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
           this.mediaProvider.setLoggedInStatus(true);
           this.navCtrl.parent.select(0);
         }

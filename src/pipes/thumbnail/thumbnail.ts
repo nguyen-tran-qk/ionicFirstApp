@@ -18,7 +18,7 @@ export class ThumbnailPipe implements PipeTransform {
   /**
    * Takes a value and makes it lowercase.
    */
-  transform(value: number, ...args) {
+  async transform(value: number, ...args) {
     return new Promise((resolve, reject) => {
       this.mediaProvider.getSingleMedia(value).subscribe((data: Pic) => {
         switch (args[0]) {

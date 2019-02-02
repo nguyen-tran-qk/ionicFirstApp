@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Pic } from '../../interfaces/pic';
+import { Pic, FileByTag } from '../../interfaces/pic';
 import { LoggedInResponse, RegisteredResponse, User } from '../../interfaces/user';
 
 /*
@@ -18,7 +18,7 @@ export class MediaProvider {
   }
 
   setLoggedInStatus(value: boolean) {
-    return this.isLoggedIn = !!value; // force cast value to boolean
+    this.isLoggedIn = !!value; // force cast value to boolean
   }
 
   getAllMedia() {
@@ -35,5 +35,9 @@ export class MediaProvider {
 
   register(user: User) {
     return this.http.post<RegisteredResponse>(this.configUrl + '/users', user);
+  }
+
+  getProfileImage() {
+    return this.http.get<FileByTag[]>(this.configUrl + '/tags/profile');
   }
 }
