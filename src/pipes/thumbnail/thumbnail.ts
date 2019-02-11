@@ -11,8 +11,6 @@ import { Pic } from '../../interfaces/pic';
   name: 'thumbnail'
 })
 export class ThumbnailPipe implements PipeTransform {
-  private cachedId: number;
-  private thumbnail = '';
 
   constructor(private mediaProvider: MediaProvider) {}
   /**
@@ -21,19 +19,23 @@ export class ThumbnailPipe implements PipeTransform {
   async transform(value: number, ...args) {
     return new Promise((resolve, reject) => {
       this.mediaProvider.getSingleMedia(value).subscribe((data: Pic) => {
-        switch (args[0]) {
-          case 'medium':
-            resolve(data.thumbnails['w320']);
-            break;
-          case 'large':
-            resolve(data.thumbnails['w640']);
-            break;
-          case 'screenshot':
-            resolve(data.screenshot);
-            break;
-          default:
-            resolve(data.thumbnails['w160']);
-            break;
+        if (!data.thumbnails) {
+          resolve(null);
+        } else {
+          switch (args[0]) {
+            case 'medium':
+              resolve(data.thumbnails['w320']);
+              break;
+            case 'large':
+              resolve(data.thumbnails['w640']);
+              break;
+            case 'screenshot':
+              resolve(data.screenshot);
+              break;
+            default:
+              resolve(data.thumbnails['w160']);
+              break;
+          }
         }
       });
     });
