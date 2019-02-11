@@ -40,8 +40,4 @@ export class MediaProvider {
   getProfileImage() {
     return this.http.get<FileByTag[]>(this.configUrl + '/tags/profile');
   }
-
-  checkUsername(username: string) {
-    return this.http.get<{username: string, available: boolean}>(this.configUrl + '/users/username/' + username);
-  }
 }

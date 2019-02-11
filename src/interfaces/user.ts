@@ -5,7 +5,6 @@ export interface User {
   email?: string;
   full_name?: string;
   time_created?: string;
-  confirmPassword?: string;
 }
 
 export interface LoggedInResponse {

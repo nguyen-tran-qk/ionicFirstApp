@@ -33,17 +33,12 @@
   <form (ngSubmit)="register()" *ngIf="!isLoginPage">
     <ion-item padding>
       <ion-label floating>Username</ion-label>
-      <ion-input type="text" name="username" [(ngModel)]="user.username" (ionBlur)="checkUsername()"></ion-input>
+      <ion-input type="text" name="username" [(ngModel)]="user.username"></ion-input>
     </ion-item>
 
     <ion-item padding>
       <ion-label floating>Password</ion-label>
-      <ion-input type="password" name="password" [(ngModel)]="user.password" (ionBlur)="checkPasswordMatch()"></ion-input>
-    </ion-item>
-
-    <ion-item padding>
-      <ion-label floating>Confirm password</ion-label>
-      <ion-input type="password" name="confirm-password" [(ngModel)]="user.confirmPassword" (ionBlur)="checkPasswordMatch()"></ion-input>
+      <ion-input type="password" name="password" [(ngModel)]="user.password"></ion-input>
     </ion-item>
 
     <ion-item padding>
@@ -57,7 +52,7 @@
     </ion-item>
 
     <div padding>
-      <button ion-button color="primary" block type="submit" [disabled]="existedUsername || passwordNotMatched">Register</button>
+      <button ion-button color="primary" block type="submit">Register</button>
     </div>
   </form>
 
