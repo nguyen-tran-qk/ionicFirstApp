@@ -30,34 +30,44 @@
     </div>
   </form>
 
-  <form (ngSubmit)="register()" *ngIf="!isLoginPage">
-    <ion-item padding>
-      <ion-label floating>Username</ion-label>
-      <ion-input type="text" name="username" [(ngModel)]="user.username" (ionBlur)="checkUsername()"></ion-input>
-    </ion-item>
+  <form novalidate (ngSubmit)="register()" #f="ngForm" *ngIf="!isLoginPage">
+    <div>
+      <label>Username</label>
+      <input type="text" name="username" [(ngModel)]="model.username" (blur)="checkUsername()" required minlength="3" #username="ngModel"/>
+      <p *ngIf="existedUsername">Username existed</p>
+      <p *ngIf="username.dirty && username.errors?.required">Username is required</p>
+      <p *ngIf="username.errors?.minlength">Username must be at least 3 characters long</p>
+    </div>
 
-    <ion-item padding>
-      <ion-label floating>Password</ion-label>
-      <ion-input type="password" name="password" [(ngModel)]="user.password" (ionBlur)="checkPasswordMatch()"></ion-input>
-    </ion-item>
+    <div>
+      <label floating>Password</label>
+      <input type="password" name="password" [(ngModel)]="model.password" (blur)="checkPasswordMatch()" required minlength="5" #password="ngModel"/>
+      <p *ngIf="password.dirty && password.errors?.required">Password is required</p>
+      <p *ngIf="password.errors?.minlength">Password must be at least 5 characters long</p>
+    </div>
 
-    <ion-item padding>
-      <ion-label floating>Confirm password</ion-label>
-      <ion-input type="password" name="confirm-password" [(ngModel)]="user.confirmPassword" (ionBlur)="checkPasswordMatch()"></ion-input>
-    </ion-item>
+    <div>
+      <label floating>Confirm password</label>
+      <input type="password" name="confirmPassword" [(ngModel)]="model.confirmPassword" (blur)="checkPasswordMatch()" required minlength="5" #confirmPassword="ngModel"/>
+      <p *ngIf="confirmPassword.dirty && confirmPassword.errors?.required">Confirm password is required</p>
+      <p *ngIf="confirmPassword.errors?.minlength">Confirm password must be at least 5 characters long</p>
+      <p *ngIf="passwordNotMatched">Confirm password does not match</p>
+    </div>
 
-    <ion-item padding>
-      <ion-label floating>Email</ion-label>
-      <ion-input type="text" name="email" [(ngModel)]="user.email"></ion-input>
-    </ion-item>
+    <div>
+      <label floating>Email</label>
+      <input type="text" name="email" [(ngModel)]="model.email" required pattern="[^ @]*@[^ @]*" #email="ngModel"/>
+      <p *ngIf="email.dirty && email.errors?.required">Email is required</p>
+      <p *ngIf="email.errors?.pattern">Invalid email format</p>
+    </div>
 
-    <ion-item padding>
-      <ion-label floating>Fullname</ion-label>
-      <ion-input type="text" name="fullname" [(ngModel)]="user.full_name"></ion-input>
-    </ion-item>
+    <div>
+      <label floating>Fullname</label>
+      <input type="text" name="fullname" [(ngModel)]="model.full_name" #fullname="ngModel"/>
+    </div>
 
     <div padding>
-      <button ion-button color="primary" block type="submit" [disabled]="existedUsername || passwordNotMatched">Register</button>
+      <button ion-button color="primary" block type="submit" [disabled]="existedUsername || passwordNotMatched || f.invalid">Register</button>
     </div>
   </form>
 

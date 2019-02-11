@@ -13,6 +13,7 @@ import { MenuPage } from '../pages/menu/menu';
 import { LoginRegisterPage } from '../pages/login-register/login-register';
 import { ProfilePage } from '../pages/profile/profile';
 import { PipesModule } from '../pipes/pipes.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { PipesModule } from '../pipes/pipes.module';
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
-    PipesModule
+    PipesModule,
+    FormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

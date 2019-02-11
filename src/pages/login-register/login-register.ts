@@ -1,8 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { MediaProvider } from '../../providers/media/media';
 import { HomePage } from '../home/home';
 import { LoggedInResponse, RegisteredResponse, User } from '../../interfaces/user';
+
+class Register {
+  constructor(
+    public username = '',
+    public password = '',
+    public confirmPassword = '',
+    public email = '',
+    public full_name = '',
+  ) {}
+}
 
 /**
  * Generated class for the LoginRegisterPage page.
@@ -16,6 +26,8 @@ import { LoggedInResponse, RegisteredResponse, User } from '../../interfaces/use
   templateUrl: 'login-register.html',
 })
 export class LoginRegisterPage {
+  model: Register = new Register();
+  @ViewChild('f') form: any;
   user: User = {
     username: null
   };
@@ -31,11 +43,12 @@ export class LoginRegisterPage {
   }
 
   login() {
-    if (this.user.username && this.user.password) {
+    if (!this.existedUsername && !this.passwordNotMatched && this.form.valid) {
       this.mediaProvider.login(this.user).subscribe((data: LoggedInResponse) => {
         if (data.token) {
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
+          this.form.resetForm();
           this.mediaProvider.setLoggedInStatus(true);
           this.navCtrl.parent.select(0);
         }
@@ -48,9 +61,9 @@ export class LoginRegisterPage {
   }
 
   register() {
-    if (this.user.username && this.user.password && this.user.email) {
-      delete this.user.confirmPassword;
-      this.mediaProvider.register(this.user).subscribe((data: RegisteredResponse) => {
+    if (this.model.username && this.model.password && this.model.email) {
+      delete this.model.confirmPassword;
+      this.mediaProvider.register(this.model).subscribe((data: RegisteredResponse) => {
         if (data.user_id) {
           this.isLoginPage = true;
         }
@@ -59,7 +72,7 @@ export class LoginRegisterPage {
   }
 
   checkUsername() {
-    this.mediaProvider.checkUsername(this.user.username).subscribe((data: { username: string, available: boolean }) => {
+    this.mediaProvider.checkUsername(this.model.username).subscribe((data: { username: string, available: boolean }) => {
       if (!data.available) {
         this.existedUsername = true;
         const toast = this.toastCtrl.create({
@@ -74,8 +87,8 @@ export class LoginRegisterPage {
   }
 
   checkPasswordMatch() {
-    if (this.user.password && this.user.confirmPassword) {
-      if (this.user.password !== this.user.confirmPassword) {
+    if (this.model.password && this.model.confirmPassword) {
+      if (this.model.password !== this.model.confirmPassword) {
         this.passwordNotMatched = true;
         const toast = this.toastCtrl.create({
           message: 'Confirm password does not match your password.',
